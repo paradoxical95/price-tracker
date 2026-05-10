@@ -1,0 +1,12 @@
+services:
+  price-tracker:
+    build: ./app
+    container_name: price-tracker
+    restart: unless-stopped
+    ports:
+      - "9091:5000"
+    volumes:
+      - price-data:/data
+
+volumes:
+  price-data:

@@ -1,0 +1,23 @@
+---
+- name: Deploy Price Tracker
+  hosts: homelab
+  become: yes
+
+  tasks:
+    - name: Create project directory
+      file:
+        path: /opt/price-tracker
+        state: directory
+        mode: '0755'
+
+    - name: Copy project files
+      shell: |
+        cp -r {{ playbook_dir }}/../app /opt/price-tracker/
+        cp {{ playbook_dir }}/../docker-compose.yml /opt/price-tracker/
+      args:
+        executable: /bin/bash
+
+    - name: Start the app via Docker Compose
+      shell: docker compose up -d --build
+      args:
+        chdir: /opt/price-tracker
